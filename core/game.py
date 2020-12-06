@@ -24,10 +24,11 @@ class Game:
         return (*self.players, *self.projectiles)
 
     def _init_hares(self, hunter):
-        x = random.randint(0, settings.SCREEN_WIDTH)
-        y = random.randint(0, settings.SCREEN_HEIGHT)
-        hare = Hare(x, y, settings.HARE_RADIUS, settings.HARE_COLOR, None, hunter)
-        self.players.append(hare)
+        for _ in range(3):
+            x = random.randint(0, settings.SCREEN_WIDTH)
+            y = random.randint(0, settings.SCREEN_HEIGHT)
+            hare = Hare(x, y, settings.HARE_RADIUS, settings.HARE_COLOR, self.players)
+            self.players.append(hare)
 
     def _init_hunter(self):
         # TODO: x_... and y_... spawn position should be reworked
