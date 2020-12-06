@@ -18,8 +18,8 @@ class Game:
         self.key_down_handlers = defaultdict(list)
         self.key_up_handlers = defaultdict(list)
         self._init_hunter()
-        # self._init_hares()
-        # self._init_fallow_deer()
+        self._init_hares()
+        self._init_fallow_deer()
 
     @property
     def objects(self):
