@@ -1,6 +1,5 @@
 class BaseVelocityProvider:
-    def __init__(self, creature, max_speed):
-        self.max_speed = max_speed
+    def __init__(self, creature):
         self.creature = creature
 
     def get_desired_velocity(self):

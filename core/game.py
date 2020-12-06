@@ -1,6 +1,7 @@
 from collections import defaultdict
 from core.hunter.hunter import Hunter
 from core.hare import Hare
+from core.fallow_deer import FallowDeer
 import pygame
 import settings
 import random
@@ -16,22 +17,30 @@ class Game:
         self.clock = pygame.time.Clock()
         self.key_down_handlers = defaultdict(list)
         self.key_up_handlers = defaultdict(list)
-        hunter = self._init_hunter()
-        self._init_hares(hunter)
+        self._init_hunter()
+        # self._init_hares()
+        # self._init_fallow_deer()
 
     @property
     def objects(self):
         return (*self.players, *self.projectiles)
 
-    def _init_hares(self, hunter):
+    def _init_hares(self):
         for _ in range(3):
             x = random.randint(0, settings.SCREEN_WIDTH)
             y = random.randint(0, settings.SCREEN_HEIGHT)
-            hare = Hare(x, y, settings.HARE_RADIUS, settings.HARE_COLOR, self.players)
+            hare = Hare(
+                x, y,
+                settings.HARE_RADIUS,
+                settings.HARE_COLOR,
+                settings.HARE_MAX_SPEED,
+                settings.HARE_MAX_VELOCITY,
+                settings.HARE_MAX_FORCE,
+                self.players,
+            )
             self.players.append(hare)
 
     def _init_hunter(self):
-        # TODO: x_... and y_... spawn position should be reworked
         x_spawn_position = int((settings.SCREEN_WIDTH - settings.HUNTER_RADIUS) / 2)
         y_spawn_position = settings.SCREEN_HEIGHT - settings.HUNTER_RADIUS * 2
         hunter = Hunter(
@@ -47,7 +56,21 @@ class Game:
             self.key_up_handlers[key].append(hunter.handle_up)
 
         self.players.append(hunter)
-        return hunter
+
+    def _init_fallow_deer(self):
+        x = random.randint(0, settings.SCREEN_WIDTH)
+        y = random.randint(0, settings.SCREEN_HEIGHT)
+        flock = FallowDeer.create_flock(
+            x, y,
+            settings.DEER_RADIUS,
+            settings.DEER_COLOR,
+            settings.DEER_MAX_SPEED,
+            settings.DEER_MAX_VELOCITY,
+            settings.DEER_MAX_FORCE,
+            self.players,
+            settings.FLOCK_SIZE,
+        )
+        self.players += flock
 
     def handle_projectile_collisions(self):
         collided_projectiles = []
