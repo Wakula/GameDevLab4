@@ -1,7 +1,9 @@
 from collections import defaultdict
 from core.hunter.hunter import Hunter
+from core.hare import Hare
 import pygame
 import settings
+import random
 
 
 class Game:
@@ -14,17 +16,24 @@ class Game:
         self.clock = pygame.time.Clock()
         self.key_down_handlers = defaultdict(list)
         self.key_up_handlers = defaultdict(list)
-        self._init_client_player()
+        hunter = self._init_hunter()
+        self._init_hares(hunter)
 
     @property
     def objects(self):
         return (*self.players, *self.projectiles)
 
-    def _init_client_player(self):
+    def _init_hares(self, hunter):
+        x = random.randint(0, settings.SCREEN_WIDTH)
+        y = random.randint(0, settings.SCREEN_HEIGHT)
+        hare = Hare(x, y, settings.HARE_RADIUS, settings.HARE_COLOR, None, hunter)
+        self.players.append(hare)
+
+    def _init_hunter(self):
         # TODO: x_... and y_... spawn position should be reworked
         x_spawn_position = int((settings.SCREEN_WIDTH - settings.HUNTER_RADIUS) / 2)
         y_spawn_position = settings.SCREEN_HEIGHT - settings.HUNTER_RADIUS * 2
-        player = Hunter(
+        hunter = Hunter(
             x_spawn_position,
             y_spawn_position,
             settings.HUNTER_RADIUS,
@@ -32,11 +41,12 @@ class Game:
             settings.HUNTER_SPEED,
             self.projectiles,
         )
-        for key in player.ALL_KEYS:
-            self.key_down_handlers[key].append(player.handle_down)
-            self.key_up_handlers[key].append(player.handle_up)
+        for key in hunter.ALL_KEYS:
+            self.key_down_handlers[key].append(hunter.handle_down)
+            self.key_up_handlers[key].append(hunter.handle_up)
 
-        self.players.append(player)
+        self.players.append(hunter)
+        return hunter
 
     def handle_projectile_collisions(self):
         collided_projectiles = []

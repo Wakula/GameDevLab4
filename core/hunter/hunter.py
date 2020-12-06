@@ -1,11 +1,11 @@
 from core.constants import Directions, DIRECTIONS_TO_DELTA
-from core.game_object import GameObject
+from core.creature import Creature
 from core.hunter.projectile import Projectile
 import pygame
 import settings
 
 
-class Hunter(GameObject):
+class Hunter(Creature):
     KEYS_TO_DIRECTIONS = {
         pygame.K_a: Directions.LEFT,
         pygame.K_w: Directions.UP,
@@ -17,11 +17,8 @@ class Hunter(GameObject):
     )
 
     def __init__(self, x, y, radius, color, offset, projectiles):
+        super().__init__(x, y, radius, color)
         self.offset = offset
-        self.radius = radius
-        self.diameter = 2 * radius
-        super().__init__(x - radius, y - radius, self.diameter, self.diameter)
-        self.color = color
         self.direction = Directions.UP
         self.move_stack = []
         self.projectile_speed = settings.PROJECTILE_SPEED
@@ -30,7 +27,7 @@ class Hunter(GameObject):
         self.health = settings.MAX_HEALTH
 
     def draw(self, surface):
-        pygame.draw.circle(surface, self.color, self.bounds.center, self.radius)
+        super().draw(surface)
         self.draw_direction(surface)
         self.draw_hp(surface)
 
