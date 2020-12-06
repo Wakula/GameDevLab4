@@ -7,4 +7,4 @@ class HareEscaping(ThreatEscaping):
     ESCAPE_RADIUS = 150
 
     def get_threatening_creatures(self):
-        return self.creature.__class__, Hunter, FallowDeer
+        return self.creature.__class__, Hunter, FallowDeer  # TODO: add Wolf

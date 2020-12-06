@@ -3,6 +3,7 @@ from core.common_velocity_providers.base import BaseVelocityProvider
 import math
 
 
+# TODO: maybe there is a way to somehow make this a general class for Escaping/Seeking
 class AbstractEscaping(BaseVelocityProvider):
     ESCAPE_RADIUS = None
     VELOCITY_MULTIPLIER = -1

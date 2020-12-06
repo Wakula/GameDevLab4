@@ -10,6 +10,7 @@ import random
 class Game:
     def __init__(self):
         self.game_over = False
+        # TODO: rename players, dead_players... to creatures...
         self.players = []
         self.projectiles = []
         pygame.init()
@@ -20,12 +21,14 @@ class Game:
         self._init_hunter()
         self._init_hares()
         self._init_fallow_deer()
+        # TODO: self._init_wolfs()
 
     @property
     def objects(self):
         return (*self.players, *self.projectiles)
 
     def _init_hares(self):
+        # TODO: move to range value config
         for _ in range(3):
             x = random.randint(0, settings.SCREEN_WIDTH)
             y = random.randint(0, settings.SCREEN_HEIGHT)
@@ -58,6 +61,7 @@ class Game:
         self.players.append(hunter)
 
     def _init_fallow_deer(self):
+        # TODO: add range with multiple group creations with configurable range
         x = random.randint(0, settings.SCREEN_WIDTH)
         y = random.randint(0, settings.SCREEN_HEIGHT)
         flock = FallowDeer.create_flock(
@@ -100,6 +104,7 @@ class Game:
     def update(self):
         for game_object in self.objects:
             game_object.update()
+        # TODO: add screen bounds collisions for Animal Creatures
         self.handle_projectile_collisions()
 
     def draw(self):

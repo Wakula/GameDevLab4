@@ -19,6 +19,7 @@ class Projectile(GameObject):
         pygame.draw.circle(surface, self.color, self.bounds.center, self.radius)
 
     def is_out_of_bounds(self):
+        # TODO: projectile also has to disappear after some time from shooting
         if (
             self.bounds.top > settings.SCREEN_HEIGHT
             or self.bounds.top < 0
@@ -29,4 +30,5 @@ class Projectile(GameObject):
         return False
 
     def hit(self, player):
+        # TODO: animals don`t have health they die from one hit -> this should be removed
         player.health -= self.damage

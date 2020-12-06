@@ -31,4 +31,5 @@ class FallowDeer(AnimalCreature):
         return flock
 
     def set_flock(self, flock):
+        # TODO: find out how to remove killed deer from flock
         self.flock = [deer for deer in flock if deer is not self]
