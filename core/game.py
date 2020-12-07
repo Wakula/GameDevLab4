@@ -91,9 +91,7 @@ class Game:
         self.remove_objects(collided_projectiles, dead_players)
 
     def on_player_hit(self, projectile, player, dead_players):
-        projectile.hit(player)
-        if player.health <= 0:
-            dead_players.append(player)
+        dead_players.append(player)
 
     def remove_objects(self, collided_projectiles, dead_players):
         for projectile in collided_projectiles:
