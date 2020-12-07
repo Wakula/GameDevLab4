@@ -8,6 +8,7 @@ class Creature(GameObject):
         self.radius = radius
         self.diameter = 2 * radius
         self.color = color
+        self.is_alive = True
         super().__init__(x - radius, y - radius, self.diameter, self.diameter)
 
     def draw(self, surface):
@@ -23,7 +24,7 @@ class Creature(GameObject):
 class AnimalCreature(Creature):
     VELOCITY_PROVIDERS = None
 
-    def __init__(self, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures):
+    def __init__(self, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures, threats):
         super().__init__(x, y, radius, color)
         self.other_creatures = other_creatures
         self.acceleration = pygame.Vector2()
@@ -32,6 +33,7 @@ class AnimalCreature(Creature):
         self.max_velocity = max_velocity
         self.max_force = max_force
         self.providers = self._get_providers()
+        self.threats = threats
 
     def _get_providers(self):
         return tuple(provider_cls(self) for provider_cls in self.VELOCITY_PROVIDERS)
@@ -51,6 +53,8 @@ class AnimalCreature(Creature):
         self.move(*self.velocity)
         self.acceleration = pygame.Vector2()
 
+    def try_kill(self, creature):
+        pass
 
 class Flock:
 

@@ -2,8 +2,6 @@ import pygame
 from core.common_velocity_providers.base import BaseVelocityProvider
 import math
 
-
-# TODO: maybe there is a way to somehow make this a general class for Escaping/Seeking
 class AbstractEscaping(BaseVelocityProvider):
     ESCAPE_RADIUS = None
     VELOCITY_MULTIPLIER = -1
@@ -45,7 +43,7 @@ class ThreatEscaping(AbstractEscaping):
         )
 
     def get_threatening_creatures(self):
-        raise NotImplementedError
+        return self.creature.threats
 
     def get_desired_distance(self):
         return self.creature.max_speed

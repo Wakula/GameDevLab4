@@ -1,23 +1,16 @@
 from core.common_velocity_providers import SeparateEscaping, ThreatEscaping
 from core.common_velocity_providers.base import BaseVelocityProvider
-from core.hunter.hunter import Hunter
 import pygame
 
-# TODO: instead of adding Wolf into this list maybe we should implement another class like
-# TODO: this gives us opportunity to extend ESCAPE_RADIUS for Wolfs because Wolfs
-# TODO: "У звичайному режимі блукають, але мають певний радіус (менший за радіус "чуття" ланей)"
-# class FallowDeerWolfEscaping(ThreatEscaping):
-#     ESCAPE_RADIUS = 400
-#
-#     def get_threatening_creatures(self):
-#         return (Wolf,)
+class FallowDeerWolfEscaping(ThreatEscaping):
+    ESCAPE_RADIUS = 400
+
+    def get_threatening_creatures(self):
+        return self.creature.special_threats
 
 
 class FallowDeerEscaping(ThreatEscaping):
     ESCAPE_RADIUS = 150
-
-    def get_threatening_creatures(self):
-        return (Hunter,)
 
 
 class FallowDeerSeparating(SeparateEscaping):
@@ -50,7 +43,6 @@ class FallowDeerFlockSeeking(SeparateEscaping):
 
 
 class FallowDeerAlign(BaseVelocityProvider):
-    # TODO: if flock size is less than MIN_FLOCK_SIZE - use Wandering
     def get_desired_velocity(self):
         sum_steering = sum(
             (creature.velocity for creature in self.creature.flock.creatures),

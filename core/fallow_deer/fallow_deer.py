@@ -10,19 +10,22 @@ class FallowDeer(AnimalCreature):
         velocity_providers.FallowDeerSeparating,
         velocity_providers.FallowDeerAlign,
         velocity_providers.FallowDeerEscaping,
+        velocity_providers.FallowDeerWolfEscaping
     )
 
-    def __init__(self, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures):
-        super().__init__(x, y, radius, color, max_speed, max_velocity, max_force, other_creatures)
+    def __init__(self, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures, threats, special_threats):
+        super().__init__(x, y, radius, color, max_speed, max_velocity, max_force, other_creatures, threats)
         self.flock = None
+        self.special_threats = special_threats
 
     @classmethod
-    def create_flock(cls, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures, flock_size):
+    def create_flock(cls, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures, threats, special_threats, flock_size):
         flock = Flock()
         for _ in range(flock_size):
             deer = FallowDeer(
                 x, y, radius, color, max_speed,
-                max_velocity, max_force, other_creatures
+                max_velocity, max_force, other_creatures,
+                threats, special_threats
             )
             flock.add_creature(deer)
 

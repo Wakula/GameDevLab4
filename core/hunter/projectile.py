@@ -28,7 +28,3 @@ class Projectile(GameObject):
         ):
             return True
         return False
-
-    def hit(self, player):
-        # TODO: animals don`t have health they die from one hit -> this should be removed
-        player.health -= self.damage
