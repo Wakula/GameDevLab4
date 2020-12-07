@@ -53,8 +53,8 @@ class FallowDeerAlign(BaseVelocityProvider):
     # TODO: if flock size is less than MIN_FLOCK_SIZE - use Wandering
     def get_desired_velocity(self):
         sum_steering = sum(
-            (creature.velocity for creature in self.creature.flock),
+            (creature.velocity for creature in self.creature.flock.creatures),
             pygame.Vector2()
         )
-        sum_steering /= len(self.creature.flock)
+        sum_steering /= len(self.creature.flock.creatures)
         return sum_steering.normalize() * self.creature.max_speed

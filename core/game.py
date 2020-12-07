@@ -10,8 +10,7 @@ import random
 class Game:
     def __init__(self):
         self.game_over = False
-        # TODO: rename players, dead_players... to creatures...
-        self.players = []
+        self.creatures = []
         self.projectiles = []
         pygame.init()
         self.surface = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
@@ -25,7 +24,7 @@ class Game:
 
     @property
     def objects(self):
-        return (*self.players, *self.projectiles)
+        return (*self.creatures, *self.projectiles)
 
     def _init_hares(self):
         # TODO: move to range value config
@@ -39,9 +38,9 @@ class Game:
                 settings.HARE_MAX_SPEED,
                 settings.HARE_MAX_VELOCITY,
                 settings.HARE_MAX_FORCE,
-                self.players,
+                self.creatures,
             )
-            self.players.append(hare)
+            self.creatures.append(hare)
 
     def _init_hunter(self):
         x_spawn_position = int((settings.SCREEN_WIDTH - settings.HUNTER_RADIUS) / 2)
@@ -58,7 +57,7 @@ class Game:
             self.key_down_handlers[key].append(hunter.handle_down)
             self.key_up_handlers[key].append(hunter.handle_up)
 
-        self.players.append(hunter)
+        self.creatures.append(hunter)
 
     def _init_fallow_deer(self):
         # TODO: add range with multiple group creations with configurable range
@@ -71,33 +70,34 @@ class Game:
             settings.DEER_MAX_SPEED,
             settings.DEER_MAX_VELOCITY,
             settings.DEER_MAX_FORCE,
-            self.players,
+            self.creatures,
             settings.FLOCK_SIZE,
         )
-        self.players += flock
+        self.creatures += flock.creatures
 
     def handle_projectile_collisions(self):
         collided_projectiles = []
-        dead_players = []
+        dead_creatures = []
         for projectile in self.projectiles:
-            for player in self.players:
-                if player is projectile.owner:
+            for creature in self.creatures:
+                if creature is projectile.owner:
                     continue
-                if player.bounds.colliderect(projectile.bounds):
-                    self.on_player_hit(projectile, player, dead_players)
+                if creature.bounds.colliderect(projectile.bounds):
+                    self.on_creature_hit(projectile, creature, dead_creatures)
                     collided_projectiles.append(projectile)
             if projectile not in collided_projectiles and projectile.is_out_of_bounds():
                 collided_projectiles.append(projectile)
-        self.remove_objects(collided_projectiles, dead_players)
+        self.remove_objects(collided_projectiles, dead_creatures)
 
-    def on_player_hit(self, projectile, player, dead_players):
-        dead_players.append(player)
+    def on_creature_hit(self, projectile, creature, dead_creatures):
+        creature.on_killed()
+        dead_creatures.append(creature)
 
-    def remove_objects(self, collided_projectiles, dead_players):
+    def remove_objects(self, collided_projectiles, dead_creatures):
         for projectile in collided_projectiles:
             self.projectiles.remove(projectile)
-        for player in dead_players:
-            self.players.remove(player)
+        for creature in dead_creatures:
+            self.creatures.remove(creature)
 
     def update(self):
         for game_object in self.objects:

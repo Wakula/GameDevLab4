@@ -57,12 +57,12 @@ class SeparateEscaping(AbstractEscaping):
     def get_desired_velocity(self):
 
         flock = self.get_flock()
-        if len(flock) < self.MIN_FLOCK_SIZE - 1:
+        if len(flock.creatures) < self.MIN_FLOCK_SIZE - 1:
             return pygame.Vector2()
 
         return sum(
             (
-                self._get_escape_velocity(creature) for creature in flock
+                self._get_escape_velocity(creature) for creature in flock.creatures
             ),
             pygame.Vector2()
         )

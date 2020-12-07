@@ -16,6 +16,9 @@ class Creature(GameObject):
     def move(self, dx, dy):
         super().move(dx, dy)
 
+    def on_killed(self):
+        pass
+
 
 class AnimalCreature(Creature):
     VELOCITY_PROVIDERS = None
@@ -47,3 +50,17 @@ class AnimalCreature(Creature):
             self.velocity = self.velocity.normalize() * self.max_velocity
         self.move(*self.velocity)
         self.acceleration = pygame.Vector2()
+
+
+class Flock:
+
+    def __init__(self):
+        self.creatures = []
+    
+    def add_creature(self, creature):
+        creature.flock = self
+        self.creatures.append(creature)
+
+    def remove_creature(self, creature):
+        creature.flock = None
+        self.creatures.remove(creature)

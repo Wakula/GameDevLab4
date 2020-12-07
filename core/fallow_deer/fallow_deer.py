@@ -1,4 +1,4 @@
-from core.creature import AnimalCreature
+from core.creature import AnimalCreature, Flock
 from core.common_velocity_providers import EdgeEvading
 from core.fallow_deer import velocity_providers
 
@@ -18,18 +18,15 @@ class FallowDeer(AnimalCreature):
 
     @classmethod
     def create_flock(cls, x, y, radius, color, max_speed, max_velocity, max_force, other_creatures, flock_size):
-        flock = []
+        flock = Flock()
         for _ in range(flock_size):
             deer = FallowDeer(
                 x, y, radius, color, max_speed,
                 max_velocity, max_force, other_creatures
             )
-            flock.append(deer)
-        for deer in flock:
-            deer.set_flock(flock)
+            flock.add_creature(deer)
 
         return flock
-
-    def set_flock(self, flock):
-        # TODO: find out how to remove killed deer from flock
-        self.flock = [deer for deer in flock if deer is not self]
+    
+    def on_killed(self):
+        self.flock.remove_creature(self)
