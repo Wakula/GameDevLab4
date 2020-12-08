@@ -7,7 +7,7 @@ from core.creature import AnimalCreature
 import pygame
 import settings
 import random
-import core.config as config
+import config
 
 
 class Game:
@@ -132,7 +132,8 @@ class Game:
 
     def remove_projectiles(self, collided_projectiles):
         for projectile in collided_projectiles:
-            self.projectiles.remove(projectile)
+            if projectile in self.projectiles:
+                self.projectiles.remove(projectile)
 
     def update(self):
         for game_object in self.objects:
