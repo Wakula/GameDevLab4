@@ -5,13 +5,14 @@ import pygame
 
 
 class Projectile(GameObject):
-    def __init__(self, x, y, radius, color, speed, owner, damage):
+    def __init__(self, x, y, radius, color, speed, owner, damage, lifetime):
         self.radius = radius
         self.diameter = 2 * radius
         self.color = color
         x_direction, y_direction = DIRECTIONS_TO_DELTA[owner.direction]
         self.owner = owner
         self.damage = damage
+        self.lifetime = lifetime
         dx, dy = x_direction * speed, y_direction * speed
         super().__init__(x - radius, y - radius, self.diameter, self.diameter, (dx, dy))
 
@@ -19,7 +20,6 @@ class Projectile(GameObject):
         pygame.draw.circle(surface, self.color, self.bounds.center, self.radius)
 
     def is_out_of_bounds(self):
-        # TODO: projectile also has to disappear after some time from shooting
         if (
             self.bounds.top > settings.SCREEN_HEIGHT
             or self.bounds.top < 0
@@ -28,3 +28,7 @@ class Projectile(GameObject):
         ):
             return True
         return False
+    
+    def update(self):
+        self.lifetime -= 1
+        super().update()

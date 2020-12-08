@@ -24,7 +24,6 @@ class Hunter(Creature):
         self.projectile_speed = settings.PROJECTILE_SPEED
         self.projectiles = projectiles
         self.previous_shooting_time = None
-        self.health = settings.MAX_HEALTH
 
     def draw(self, surface):
         super().draw(surface)
@@ -49,7 +48,8 @@ class Hunter(Creature):
             settings.PROJECTILE_RADIUS, settings.PROJECTILE_COLOR,
             settings.PROJECTILE_SPEED,
             self,
-            settings.PROJECTILE_BASE_DAMAGE
+            settings.PROJECTILE_BASE_DAMAGE,
+            settings.PROJECTILE_LIFETIME
         )
         self.projectiles.append(projectile)
 

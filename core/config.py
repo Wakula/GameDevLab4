@@ -1,2 +1,4 @@
-# TODO: here we should have FLOCK_SIZE, WOLFS_AMOUNT...
-# TODO: this should be imported into settings.py add described in Readme.md
+DEER_FLOCKS = 5
+FLOCK_SIZE = 15
+HARE_COUNT = 10
+WOLF_COUNT = 10

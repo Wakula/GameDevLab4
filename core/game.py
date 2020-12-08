@@ -7,6 +7,7 @@ from core.creature import AnimalCreature
 import pygame
 import settings
 import random
+import core.config as config
 
 
 class Game:
@@ -29,7 +30,7 @@ class Game:
         return (*self.creatures, *self.projectiles)
 
     def _init_hares(self):
-        for _ in range(settings.HARE_COUNT):
+        for _ in range(config.HARE_COUNT):
             x = random.randint(0, settings.SCREEN_WIDTH)
             y = random.randint(0, settings.SCREEN_HEIGHT)
             hare = Hare(
@@ -62,7 +63,7 @@ class Game:
         self.creatures.append(hunter)
 
     def _init_fallow_deer(self):
-        for _ in range(settings.DEER_FLOCKS):
+        for _ in range(config.DEER_FLOCKS):
             x = random.randint(0, settings.SCREEN_WIDTH)
             y = random.randint(0, settings.SCREEN_HEIGHT)
             flock = FallowDeer.create_flock(
@@ -75,12 +76,12 @@ class Game:
                 self.creatures,
                 (Hunter,),
                 (Wolf,),
-                settings.FLOCK_SIZE
+                config.FLOCK_SIZE
             )
             self.creatures += flock.creatures
 
     def _init_wolves(self):
-        for _ in range(settings.WOLF_COUNT):
+        for _ in range(config.WOLF_COUNT):
             x = random.randint(0, settings.SCREEN_WIDTH)
             y = random.randint(0, settings.SCREEN_HEIGHT)
             hare = Wolf(
@@ -99,6 +100,10 @@ class Game:
     def handle_projectile_collisions(self):
         collided_projectiles = []
         for projectile in self.projectiles:
+            if projectile.lifetime <= 0:
+                collided_projectiles.append(projectile)
+                continue
+
             for creature in self.creatures:
                 if creature is projectile.owner:
                     continue
